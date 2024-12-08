@@ -30,11 +30,13 @@ const SignInScreen: React.FC<SignInProps> = ({
 
   const handleSignIn = () => {
     onSignIn?.(email, password);
+    router.replace('/home');
   };
 
   const handleSignUp = () => {
-    router.push('/register');  
+    router.replace('/register');  
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
