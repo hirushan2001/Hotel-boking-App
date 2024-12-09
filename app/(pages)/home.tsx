@@ -18,7 +18,7 @@ const HomeScreen: React.FC = () => {
       name: "The Dreamland by Young Villas",
       location: "Kuta, Bali",
       price: "$50/night",
-      image: "https://via.placeholder.com/150",
+      image: "../../assets/images/h1.jpg",
       rating: 4.8,
     },
     {
@@ -26,7 +26,7 @@ const HomeScreen: React.FC = () => {
       name: "Sunset Oasis Resort",
       location: "Santorini, Greece",
       price: "$72/night",
-      image: "https://via.placeholder.com/150",
+      image: "../../assets/images/h1.jpg",
       rating: 4.7,
     },
   ];
@@ -37,7 +37,7 @@ const HomeScreen: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.greetingContainer}>
           <Image
-            source={{ uri: "https://picsum.photos/id/1005/100/100" }}
+            source={require("../../assets/images/h1.jpg")}
             style={styles.profileImage}
           />
           <View>
@@ -74,8 +74,8 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
         <Image
-          source={{ uri: "https://via.placeholder.com/150" }} // Replace with the correct image URL
-          style={styles.bannerImage}
+            source={require("../../assets/images/img2.jpg")}
+            style={styles.bannerImage}
           resizeMode="contain"
         />
       </View>
