@@ -9,15 +9,18 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from 'expo-router';
 
 const HomeScreen: React.FC = () => {
+  const router = useRouter();
+
   const hotels = [
     {
       id: "1",
       name: "Mountain View Lodge",
       location: "Aspen, Colorado",
       price: "$160/night",
-      image: require("../../assets/images/h1.jpg"),
+      image: require("../../../assets/images/h1.jpg"),
       rating: 4.7,
     },
     {
@@ -25,15 +28,15 @@ const HomeScreen: React.FC = () => {
       name: "Palm Grove Hideaway",
       location: "Bora Bora, French Polynesia",
       price: "$395/night",
-      image: require("../../assets/images/h1.jpg"),
+      image: require("../../../assets/images/h1.jpg"),
       rating: 4.9,
-    },
+    },  
     {
       id: "3",
       name: "Hotel Found",
       location: "24",
       price: "$112/night",
-      image: require("../../assets/images/h1.jpg"),
+      image: require("../../../assets/images/h1.jpg"),
       rating: 4.7,
     },
   ];
@@ -44,7 +47,7 @@ const HomeScreen: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.greetingContainer}>
           <Image
-            source={require("../../assets/images/h1.jpg")}
+            source={require("../../../assets/images/h1.jpg")}  
             style={styles.profileImage}
           />
           <View>
@@ -81,7 +84,7 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
         <Image
-          source={require("../../assets/images/h1.jpg")}
+          source={require("../../../assets/images/h1.jpg")}
           style={styles.bannerImage}
           resizeMode="contain"
         />
@@ -100,9 +103,19 @@ const HomeScreen: React.FC = () => {
         data={hotels}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => `explore-${item.id}`}
+        keyExtractor={(item) => `explore-${item.id}`}   
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.hotelCard}>
+          <TouchableOpacity style={styles.hotelCard} onPress ={() => router.push({
+            pathname: '/(pages)/home/hotelDetails',
+            params: {
+              name: item.name,
+              location: item.location,
+              price: item.price,  
+              rating: item.rating,
+              description: 'Experience luxury and tranquility at Seaside Resort in the Maldives.',
+            },
+          })
+          }>
             <Image source={item.image} style={styles.hotelImage} />
             <Text style={styles.hotelName}>{item.name}</Text>
             <Text style={styles.hotelDetails}>
