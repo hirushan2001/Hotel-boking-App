@@ -7,7 +7,6 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -15,24 +14,32 @@ const HomeScreen: React.FC = () => {
   const hotels = [
     {
       id: "1",
-      name: "The Dreamland by Young Villas",
-      location: "Kuta, Bali",
-      price: "$50/night",
-      image: "../../assets/images/h1.jpg",
-      rating: 4.8,
+      name: "Mountain View Lodge",
+      location: "Aspen, Colorado",
+      price: "$160/night",
+      image: require("../../assets/images/h1.jpg"),
+      rating: 4.7,
     },
     {
       id: "2",
-      name: "Sunset Oasis Resort",
-      location: "Santorini, Greece",
-      price: "$72/night",
-      image: "../../assets/images/h1.jpg",
+      name: "Palm Grove Hideaway",
+      location: "Bora Bora, French Polynesia",
+      price: "$395/night",
+      image: require("../../assets/images/h1.jpg"),
+      rating: 4.9,
+    },
+    {
+      id: "3",
+      name: "Hotel Found",
+      location: "24",
+      price: "$112/night",
+      image: require("../../assets/images/h1.jpg"),
       rating: 4.7,
     },
   ];
 
-  return (
-    <ScrollView style={styles.container}>
+  const renderHeader = () => (
+    <>
       {/* Header Section */}
       <View style={styles.header}>
         <View style={styles.greetingContainer}>
@@ -74,27 +81,29 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
         <Image
-            source={require("../../assets/images/img2.jpg")}
-            style={styles.bannerImage}
+          source={require("../../assets/images/h1.jpg")}
+          style={styles.bannerImage}
           resizeMode="contain"
         />
       </View>
 
-      {/* Explore Hotels */}
+      {/* Explore Hotels Section Header */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Explore Hotels</Text>
         <TouchableOpacity>
           <Text style={styles.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Horizontal Hotel List */}
       <FlatList
         data={hotels}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `explore-${item.id}`}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.hotelCard}>
-            <Image source={{ uri: item.image }} style={styles.hotelImage} />
+            <Image source={item.image} style={styles.hotelImage} />
             <Text style={styles.hotelName}>{item.name}</Text>
             <Text style={styles.hotelDetails}>
               {item.location} • {item.price}
@@ -102,16 +111,48 @@ const HomeScreen: React.FC = () => {
             <Text style={styles.hotelRating}>⭐ {item.rating}</Text>
           </TouchableOpacity>
         )}
+        style={styles.horizontalList}
       />
-    </ScrollView>
+
+      {/* Top Rated Hotels Section Header */}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Top Rated Hotels</Text>
+        <TouchableOpacity>
+          <Text style={styles.seeAll}>See All</Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+
+  return (
+    <FlatList
+      data={hotels}
+      ListHeaderComponent={renderHeader}
+      showsVerticalScrollIndicator={false}
+      keyExtractor={(item) => `top-rated-${item.id}`}
+      renderItem={({ item }) => (
+        <TouchableOpacity style={styles.topRatedContainer}>
+          <Image source={item.image} style={styles.topRatedImage} />
+          <View style={styles.topRatedTextContainer}>
+            <Text style={styles.topRatedName}>{item.name}</Text>
+            <Text style={styles.topRatedDetails}>{item.location}</Text>
+            <Text style={styles.topRatedPrice}>{item.price}</Text>
+          </View>
+          <Text style={styles.topRatedRating}>⭐ {item.rating}</Text>
+        </TouchableOpacity>
+      )}
+      contentContainerStyle={styles.container}
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#ffffff",
     padding: 16,
+  },
+  horizontalList: {
+    marginBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -166,12 +207,10 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
   },
-
   searchIcon: {
     color: "#888",
     paddingHorizontal: 10,
   },
-
   banner: {
     backgroundColor: "#0d7747",
     borderRadius: 15,
@@ -180,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
-    overflow: "hidden", 
+    overflow: "hidden",
   },
   bannerTextContent: {
     flex: 1,
@@ -219,14 +258,14 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     marginLeft: 10,
-    borderRadius: 10, // Optional for rounded images
+    borderRadius: 10,
   },
-
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 10,
+    marginTop: 20,
   },
   sectionTitle: {
     fontSize: 18,
@@ -240,11 +279,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
     padding: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
     width: 200,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: "rgba(0, 0, 0, 0.05)",
   },
   hotelImage: {
     width: "100%",
@@ -265,6 +307,49 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     color: "#4CAF50",
+  },
+  topRatedContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  topRatedImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
+    marginRight: 12,
+  },
+  topRatedTextContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  topRatedName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: "#333",
+  },
+  topRatedDetails: {
+    fontSize: 14,
+    color: "#888",
+    marginBottom: 4,
+  },
+  topRatedPrice: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#4CAF50",
+  },
+  topRatedRating: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#FFD700",
   },
 });
 
